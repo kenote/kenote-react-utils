@@ -10,7 +10,7 @@ yarn add kenote-react-utils
 
 ## Usages
 
-### `createRouter`
+### createRouter
 
 ```js
 // routerConfig.js
@@ -79,7 +79,7 @@ const routes = {
 export default routes
 ```
 
-### `renderRouteConfig`
+### renderRouteConfig
 
 ```jsx
 import React, { PureComponent } from 'react'
@@ -109,4 +109,82 @@ export default class Root extends PureComponent {
     )
   }
 }
+```
+
+## Initialize
+
+```js
+// reducer.js
+import { combineReducers, bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { routerReducer as router } from 'react-router-redux'
+import { initializeReducer as initialize, InitializeComponent, connectInitialize } from 'kenote-react-utils/dist/initialize'
+
+
+export default combineReducers({
+  router,
+  initialize
+})
+
+export const InitializePending = connect(...connectInitialize('initialize', bindActionCreators))(InitializeComponent)
+```
+
+```jsx
+// app.jsx
+import React, { PureComponent } from 'react'
+import { InitializePending } from '../store/reducers'
+import '../styles/common.scss'
+
+export default class AppEntry extends PureComponent {
+
+  constructor (props) {
+    super(props)
+  }
+
+  render () {
+    const { children } = this.props
+    return (
+      <InitializePending>
+        {children}
+      </InitializePending>
+    )
+  }
+}
+```
+
+```js
+// webpack.config.js
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+const config = {
+  plugins: [
+    new CopyWebpackPlugin([
+      {
+        from: 'node_modules/kenote-react-utils/dist/initialize/browser.js',
+        to: 'initialize.browser.js'
+      },
+      {
+        from: 'node_modules/kenote-react-utils/dist/initialize/browser.css',
+        to: 'initialize.browser.css'
+      },
+    ])
+  ]
+}
+```
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <title>React App</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <link href="./initialize.browser.css" rel="stylesheet">
+</head>
+<body>
+  <div id="root">
+  </div>
+  <script type="text/javascript" src="./initialize.browser.js"></script>
+</body>
+</html>
 ```
