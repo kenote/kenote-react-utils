@@ -8,7 +8,6 @@ interface InitializeAction {
 }
 interface InitialiizePayload {
     pending: number;
-    tag: string;
 }
 declare const _default: (state: InitializeState, action: InitializeAction) => any;
 export default _default;

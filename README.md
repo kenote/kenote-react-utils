@@ -115,26 +115,34 @@ export default class Root extends PureComponent {
 
 ```js
 // reducer.js
-import { combineReducers, bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import { combineReducers } from 'redux'
 import { routerReducer as router } from 'react-router-redux'
-import { initializeReducer as initialize, InitializeComponent, connectInitialize } from 'kenote-react-utils/dist/initialize'
-
+import { initializeReducer as initialize } from 'kenote-react-utils/dist/initialze'
 
 export default combineReducers({
   router,
   initialize
 })
-
-export const InitializePending = connect(...connectInitialize('initialize', bindActionCreators))(InitializeComponent)
 ```
 
 ```jsx
 // app.jsx
 import React, { PureComponent } from 'react'
-import { InitializePending } from '../store/reducers'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { InitializeComponent } from 'kenote-react-utils/dist/initialze'
+import * as initializeActions from 'kenote-react-utils/dist/initialze/actions'
 import '../styles/common.scss'
 
+@connect(
+  state => ({
+    pending: state.initialize.pending,
+    progress: state.initialize.progress
+  }),
+  dispatch => ({
+    actions: bindActionCreators({ ...initializeActions }, dispatch)
+  })
+)
 export default class AppEntry extends PureComponent {
 
   constructor (props) {
@@ -142,11 +150,12 @@ export default class AppEntry extends PureComponent {
   }
 
   render () {
-    const { children } = this.props
+    let { children, pending, progress, actions } = this.props
+    let { initialProgress, initialComplete } = actions
     return (
-      <InitializePending>
+      <InitializeComponent {...{ pending, progress }} actions={{ initialProgress, initialComplete }} >
         {children}
-      </InitializePending>
+      </InitializeComponent>
     )
   }
 }

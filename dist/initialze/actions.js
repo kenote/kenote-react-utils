@@ -2,25 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.INITIALIZE_PENDING = '@@initialze/PENDING';
 exports.INITIALIZE_COMPLETE = '@@initialze/COMPLETE';
-exports.initialProgress = function (pending, tag) {
-    if (tag === void 0) { tag = null; }
+exports.initialProgress = function (pending, times) {
+    if (times === void 0) { times = 300; }
     return function (dispatch) {
         setTimeout(function () {
             dispatch({
                 type: exports.INITIALIZE_PENDING,
-                payload: { pending: pending, tag: tag }
+                payload: { pending: pending }
             });
-        }, 300);
+        }, times);
     };
 };
-exports.initialComplete = function (tag) {
-    if (tag === void 0) { tag = null; }
+exports.initialComplete = function (times) {
+    if (times === void 0) { times = 500; }
     return function (dispatch) {
         return setTimeout(function () {
             dispatch({
-                type: exports.INITIALIZE_COMPLETE,
-                payload: { tag: tag }
+                type: exports.INITIALIZE_COMPLETE
             });
-        }, 500);
+        }, times);
     };
 };

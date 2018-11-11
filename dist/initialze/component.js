@@ -14,7 +14,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var actions_1 = require("./actions");
 var InitializeComponent = (function (_super) {
     __extends(InitializeComponent, _super);
     function InitializeComponent(props) {
@@ -29,13 +28,13 @@ var InitializeComponent = (function (_super) {
         var props = this.props;
         if (props.pending) {
             props.progress === 65 && props.actions.initialProgress(100);
-            props.progress === 100 && props.actions.initialComplete();
+            props.progress === 100 && props.actions.initialComplete(this.props.waitimes);
         }
     };
     InitializeComponent.prototype.render = function () {
         var props = this.props;
-        var pending = props.pending, progress = props.progress, children = props.children;
-        return pending ? (React.createElement("div", { className: "initial-pending" },
+        var pending = props.pending, progress = props.progress, children = props.children, animation = props.animation;
+        return pending ? (React.createElement("div", { className: "initial-pending", style: progress === 100 && animation ? { animation: animation } : {} },
             React.createElement("div", { className: "progress-span" },
                 "Loading... ",
                 progress,
@@ -44,21 +43,16 @@ var InitializeComponent = (function (_super) {
                 React.createElement("div", { className: "progress-bar-container" },
                     React.createElement("div", { className: "progress-bar-pending", style: { width: progress + "%" } }))))) : children;
     };
+    InitializeComponent.defaultProps = {
+        pending: false,
+        progress: 15,
+        animation: undefined,
+        waitimes: 500,
+        actions: {
+            initialProgress: function () { },
+            initialComplete: function () { }
+        }
+    };
     return InitializeComponent;
 }(React.PureComponent));
 exports.InitializeComponent = InitializeComponent;
-var stateToProps = function (state, picks) {
-    if (picks === void 0) { picks = []; }
-    var props = {};
-    for (var _i = 0, picks_1 = picks; _i < picks_1.length; _i++) {
-        var key = picks_1[_i];
-        props[key] = state[key];
-    }
-    return props;
-};
-exports.connectInitialize = function (tagName, bindActionCreators) { return [
-    function (state) { return stateToProps(state[tagName], ['pending', 'progress']); },
-    function (dispatch) { return ({
-        actions: bindActionCreators({ initialComplete: actions_1.initialComplete, initialProgress: actions_1.initialProgress }, dispatch)
-    }); }
-]; };

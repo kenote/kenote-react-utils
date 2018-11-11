@@ -1,6 +1,6 @@
 {
   "name": "kenote-react-utils",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.8",
   "description": "This is a React Utils set.",
   "main": "dist",
   "repository": "https://github.com/kenote/kenote-react-utils.git",

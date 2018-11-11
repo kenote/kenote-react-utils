@@ -1,41 +1,53 @@
 import * as React from 'react'
-import { initialComplete, initialProgress } from './actions'
 
-interface Props {
+interface InitializeProps {
   pending?: boolean
   actions?: {
     initialProgress: Function
     initialComplete: Function
   }
   progress?: number
+  animation?: string
+  waitimes: number
   children?: React.ReactNode
 }
 
-export class InitializeComponent extends React.PureComponent {
+export class InitializeComponent extends React.PureComponent<InitializeProps, any> {
 
-  constructor (props: Props) {
+  static defaultProps = {
+    pending: false,
+    progress: 15,
+    animation: undefined,
+    waitimes: 500,
+    actions: {
+      initialProgress: function () {},
+      initialComplete: function () {}
+    }
+  }
+
+  constructor (props: InitializeProps) {
     super(props)
   }
 
   componentDidMount () {
-    let props: Props = this.props
+    let props: InitializeProps = this.props
     props.actions && props.actions.initialProgress(65)
   }
 
   componentDidUpdate (prevProps, prevState) {
     const { pending, progress } = prevProps
-    let props: Props = this.props
+    let props: InitializeProps = this.props
     if (props.pending) {
       props.progress === 65 && props.actions.initialProgress(100)
-      props.progress === 100 && props.actions.initialComplete()
+      props.progress === 100 && props.actions.initialComplete(this.props.waitimes)
     }
   }
 
   render () {
-    let props: Props = this.props
-    let { pending, progress, children } = props
+    let props: InitializeProps = this.props
+    let { pending, progress, children, animation } = props
     return pending ? (
-      <div className="initial-pending">
+      <div className="initial-pending" style={progress === 100 && animation ? { animation } : {}}>
         <div className="progress-span">Loading... {progress}%</div>
         <div className="layout-progress-bar">
           <div className="progress-bar-container">
@@ -46,18 +58,3 @@ export class InitializeComponent extends React.PureComponent {
     ) : children
   }
 }
-
-const stateToProps = (state: object, picks: Array<string> = []): object => {
-  let props: object = {}
-  for (let key of picks) {
-    props[key] = state[key]
-  }
-  return props
-}
-
-export const connectInitialize = (tagName: string, bindActionCreators: Function): Array<Function> => [
-  (state: object) => stateToProps(state[tagName], ['pending', 'progress']),
-  (dispatch: any) => ({
-    actions: bindActionCreators({ initialComplete, initialProgress }, dispatch)
-  })
-]

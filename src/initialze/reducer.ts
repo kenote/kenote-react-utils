@@ -12,7 +12,6 @@ interface InitializeAction {
 
 interface InitialiizePayload {
   pending: number;
-  tag: string
 }
 
 const createInitializeReducer = () => {

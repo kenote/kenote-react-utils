@@ -1,20 +1,19 @@
 export const INITIALIZE_PENDING: string = '@@initialze/PENDING'
 export const INITIALIZE_COMPLETE: string = '@@initialze/COMPLETE'
 
-export const initialProgress = (pending: number, tag: string = null): any => dispatch => {
+export const initialProgress = (pending: number, times: number = 300): any => dispatch => {
   setTimeout(() => {
     dispatch({
       type: INITIALIZE_PENDING,
-      payload: { pending, tag }
+      payload: { pending }
     })
-  }, 300)
+  }, times)
 }
 
-export const initialComplete = (tag: string = null): any => dispatch => {
+export const initialComplete = (times: number = 500): any => dispatch => {
   return setTimeout(() => {
     dispatch({
-      type: INITIALIZE_COMPLETE,
-      payload: { tag }
+      type: INITIALIZE_COMPLETE
     })
-  }, 500)
+  }, times)
 }
