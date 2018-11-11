@@ -160,12 +160,14 @@ const config = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: 'node_modules/kenote-react-utils/dist/initialize/browser.js',
-        to: 'initialize.browser.js'
+        from: 'kenote-react-utils/dist/initialize/browser.js',
+        to: 'initialize.browser.js',
+        content: '../node_modules/'
       },
       {
-        from: 'node_modules/kenote-react-utils/dist/initialize/browser.css',
-        to: 'initialize.browser.css'
+        from: 'kenote-react-utils/dist/initialize/browser.css',
+        to: 'initialize.browser.css',
+        content: '../node_modules/'
       },
     ])
   ]

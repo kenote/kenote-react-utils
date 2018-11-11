@@ -1,14 +1,13 @@
 {
   "name": "kenote-react-utils",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.6",
   "description": "This is a React Utils set.",
   "main": "dist",
   "repository": "https://github.com/kenote/kenote-react-utils.git",
   "author": "thondery <thondery@163.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && node-sass src --output dist",
-    "postinstall": "yarn build"
+    "build": "tsc && node-sass src --output dist"
   },
   "peerDependencies": {
     "react": ">=16.0.0"
