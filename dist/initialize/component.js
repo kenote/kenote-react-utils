@@ -16,8 +16,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var InitializeComponent = (function (_super) {
     __extends(InitializeComponent, _super);
-    function InitializeComponent(props) {
-        return _super.call(this, props) || this;
+    function InitializeComponent() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     InitializeComponent.prototype.componentDidMount = function () {
         var props = this.props;
@@ -26,9 +26,8 @@ var InitializeComponent = (function (_super) {
     InitializeComponent.prototype.componentDidUpdate = function (prevProps, prevState) {
         var pending = prevProps.pending, progress = prevProps.progress;
         var props = this.props;
-        if (props.pending) {
-            props.progress === 65 && props.actions.initialProgress(100);
-            props.progress === 100 && props.actions.initialComplete(this.props.waitimes);
+        if (props.pending && props.progress === 100) {
+            props.actions.initialComplete(this.props.waitimes);
         }
     };
     InitializeComponent.prototype.render = function () {

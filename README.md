@@ -149,6 +149,15 @@ export default class AppEntry extends PureComponent {
     super(props)
   }
 
+  componentDidMount () {
+    setTimeout( () => {
+      this.props.actions.initialProgress(85)
+      setTimeout( () => {
+        this.props.actions.initialProgress(100)
+      }, 500)
+    }, 500)
+  }
+
   render () {
     let { children, pending, progress, actions } = this.props
     let { initialProgress, initialComplete } = actions

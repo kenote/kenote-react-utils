@@ -14,7 +14,7 @@ interface InitializeProps {
 
 export class InitializeComponent extends React.PureComponent<InitializeProps, any> {
 
-  static defaultProps = {
+  static defaultProps: InitializeProps = {
     pending: false,
     progress: 15,
     animation: undefined,
@@ -25,10 +25,6 @@ export class InitializeComponent extends React.PureComponent<InitializeProps, an
     }
   }
 
-  constructor (props: InitializeProps) {
-    super(props)
-  }
-
   componentDidMount () {
     let props: InitializeProps = this.props
     props.actions && props.actions.initialProgress(65)
@@ -37,9 +33,8 @@ export class InitializeComponent extends React.PureComponent<InitializeProps, an
   componentDidUpdate (prevProps, prevState) {
     const { pending, progress } = prevProps
     let props: InitializeProps = this.props
-    if (props.pending) {
-      props.progress === 65 && props.actions.initialProgress(100)
-      props.progress === 100 && props.actions.initialComplete(this.props.waitimes)
+    if (props.pending && props.progress === 100) {
+       props.actions.initialComplete(this.props.waitimes)
     }
   }
 
